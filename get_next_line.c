@@ -42,7 +42,7 @@ int		get_next_line(const int fd, char **line)
 
 	k = 0;
 	i = 0;
-	printf("%d", k);
+	printf("%d\n", k);
 	gnl = malloc(sizeof(t_str));
 	if (fd)
 	{
