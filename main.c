@@ -6,7 +6,7 @@
 /*   By: opavliuk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 16:59:26 by opavliuk          #+#    #+#             */
-/*   Updated: 2018/04/05 17:42:29 by opavliuk         ###   ########.fr       */
+/*   Updated: 2018/04/09 21:27:29 by opavliuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ int		main(int argc, char **argv)
 		while (i > 0)
 		{
 			i = get_next_line(fd, &line);
+			ft_putendl(line);
 			printf("%d\n", i);
+			ft_strdel(&line);
 		}
 		if (i == 0)
 			ft_putendl("Read is done!");

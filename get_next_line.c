@@ -6,58 +6,53 @@
 /*   By: opavliuk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 12:57:52 by opavliuk          #+#    #+#             */
-/*   Updated: 2018/04/05 17:57:35 by opavliuk         ###   ########.fr       */
+/*   Updated: 2018/04/09 21:27:39 by opavliuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
 
-int		ft_strnlen(char *buf, int i, char c)
+void	check_NL(t_str *gnl, char *buffer, char **line)
 {
-	int n;
+	int i;
 
-	n = 0;
-	while (buf[i] != c)
+	i = 0;
+	while (buffer[i])
 	{
+		if (buffer[i] == '\n')
+			break ;
 		i++;
-		n++;
 	}
-	return (n);
+	(*line) = ft_strsub(buffer, 0, i);
+	printf("%d\n", i);
+	if (gnl->n == 1)
+	{
+		gnl->string = ft_strjoin(gnl->mod, buffer + (i + 1));
+		ft_strdel(&(gnl->mod));
+	}
+	else
+		gnl->string = ft_strsub(buffer, i + 1, ft_strlen(buffer + (i + 1)));
+	gnl->mod = ft_strdup(gnl->string);
+	ft_strdel(&(gnl->string));
 }
 
 int		get_next_line(const int fd, char **line)
 {
-	int			n;
-	int			j;
-	int 		k;
-	static int	i;
-	static char buf[BUFF_SIZE];
-	
-	n = 0;
-	j = i;
-			printf("Buffer: %s\n", buf);
-	ft_bzero(&buf[i], BUFF_SIZE - i);
-			printf("Buffer after bzero: %s\n", buf);
-	if (fd && line)
+	static t_str	*gnl;
+	int				k;
+	int 			i;
+
+	k = 0;
+	i = 0;
+	printf("%d\n", k);
+	gnl = malloc(sizeof(t_str));
+	if (fd)
 	{
-		while ((k = read(fd, &buf[i], 1)))
-		{
-			if (buf[i] == '\n')
-				break ;
-			i++;
-		}
+		k = read(fd, buffer, BUFF_SIZE);
+		check_NL(gnl, buffer, line);
 		if (!k)
-			return (0);
-				printf("%d\n", k);
-		n = ft_strnlen(buf, j, '\n');
-		(*line) = ft_strsub(buf, j, n);
-				printf("line: %s\n", (*line));
-		ft_putstr((*line));
-				ft_putchar('\n');
-		ft_strdel(line);
-				printf("line after free: %s\n", (*line));
-		i++;
+			return (0);	
 		return (1);
 	}		
 	return (-1);
