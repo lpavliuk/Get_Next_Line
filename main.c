@@ -25,7 +25,6 @@ int		main(int argc, char **argv)
 	if (argc == 2)
 	{
 		fd = open(argv[1], O_RDONLY, 0);
-		printf("%d\n", fd);
 		while (i > 0)
 		{
 			i = get_next_line(fd, &line);
