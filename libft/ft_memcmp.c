@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: opavliuk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/11 18:14:59 by opavliuk          #+#    #+#             */
-/*   Updated: 2018/04/13 21:53:35 by opavliuk         ###   ########.fr       */
+/*   Created: 2018/03/21 20:26:19 by opavliuk          #+#    #+#             */
+/*   Updated: 2018/03/28 15:48:53 by opavliuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include "libft/libft.h"
-
-# define BUFF_SIZE 1
-
-typedef struct	s_lsts
+int		ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	int				k;
-	int				fd;
-	char			*n;
-	char			buffer[BUFF_SIZE + 1];
-	struct s_lsts	*next;
-}				t_lsts;
+	size_t			i;
+	unsigned char	*d1;
+	unsigned char	*d2;
 
-int				get_next_line(const int fd, char **line);
-
-#endif
+	i = 0;
+	d1 = (unsigned char *)s1;
+	d2 = (unsigned char *)s2;
+	while (i < n)
+	{
+		if (d1[i] != d2[i])
+			return (d1[i] - d2[i]);
+		i++;
+	}
+	return (0);
+}

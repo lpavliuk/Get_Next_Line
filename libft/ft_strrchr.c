@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: opavliuk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/11 18:14:59 by opavliuk          #+#    #+#             */
-/*   Updated: 2018/04/13 21:53:35 by opavliuk         ###   ########.fr       */
+/*   Created: 2018/03/22 13:25:20 by opavliuk          #+#    #+#             */
+/*   Updated: 2018/03/28 19:48:49 by opavliuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include "libft/libft.h"
-
-# define BUFF_SIZE 1
-
-typedef struct	s_lsts
+char	*ft_strrchr(const char *s, int c)
 {
-	int				k;
-	int				fd;
-	char			*n;
-	char			buffer[BUFF_SIZE + 1];
-	struct s_lsts	*next;
-}				t_lsts;
+	int		i;
+	char	*d;
 
-int				get_next_line(const int fd, char **line);
-
-#endif
+	i = 0;
+	d = (char *)s;
+	while (d[i] != '\0')
+		i++;
+	while (i >= 0)
+	{
+		if (d[i] == (char)c)
+			return (d + i);
+		i--;
+	}
+	return (NULL);
+}

@@ -1,31 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: opavliuk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/11 18:14:59 by opavliuk          #+#    #+#             */
-/*   Updated: 2018/04/13 21:53:35 by opavliuk         ###   ########.fr       */
+/*   Created: 2018/03/22 19:27:41 by opavliuk          #+#    #+#             */
+/*   Updated: 2018/03/28 19:17:49 by opavliuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-
-# include "libft/libft.h"
-
-# define BUFF_SIZE 1
-
-typedef struct	s_lsts
+int		ft_isalnum(int c)
 {
-	int				k;
-	int				fd;
-	char			*n;
-	char			buffer[BUFF_SIZE + 1];
-	struct s_lsts	*next;
-}				t_lsts;
-
-int				get_next_line(const int fd, char **line);
-
-#endif
+	if ((c >= '0' && c <= '9') ||
+			(c >= 'a' && c <= 'z') ||
+				(c >= 'A' && c <= 'Z'))
+		return (1);
+	else
+		return (0);
+}

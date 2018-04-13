@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strncat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: opavliuk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/11 18:14:59 by opavliuk          #+#    #+#             */
-/*   Updated: 2018/04/13 21:53:35 by opavliuk         ###   ########.fr       */
+/*   Created: 2018/03/21 21:38:25 by opavliuk          #+#    #+#             */
+/*   Updated: 2018/03/28 19:47:54 by opavliuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include "libft/libft.h"
-
-# define BUFF_SIZE 1
-
-typedef struct	s_lsts
+char	*ft_strncat(char *s1, const char *s2, size_t n)
 {
-	int				k;
-	int				fd;
-	char			*n;
-	char			buffer[BUFF_SIZE + 1];
-	struct s_lsts	*next;
-}				t_lsts;
+	size_t i;
+	size_t t;
 
-int				get_next_line(const int fd, char **line);
-
-#endif
+	i = 0;
+	t = 0;
+	while (s1[i] != '\0')
+		i++;
+	while (s2[t] != '\0' && t < n)
+	{
+		s1[i] = s2[t];
+		i++;
+		t++;
+	}
+	s1[i] = '\0';
+	return (s1);
+}

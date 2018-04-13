@@ -1,31 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_sqrt.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: opavliuk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/11 18:14:59 by opavliuk          #+#    #+#             */
-/*   Updated: 2018/04/13 21:53:35 by opavliuk         ###   ########.fr       */
+/*   Created: 2018/03/28 18:43:31 by opavliuk          #+#    #+#             */
+/*   Updated: 2018/03/28 19:10:21 by opavliuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include "libft/libft.h"
-
-# define BUFF_SIZE 1
-
-typedef struct	s_lsts
+size_t		ft_sqrt(size_t n)
 {
-	int				k;
-	int				fd;
-	char			*n;
-	char			buffer[BUFF_SIZE + 1];
-	struct s_lsts	*next;
-}				t_lsts;
+	size_t i;
 
-int				get_next_line(const int fd, char **line);
-
-#endif
+	i = 2;
+	if (n == 0 || n == 2 || n == 3)
+		return (0);
+	if (n == 1)
+		return (1);
+	if (n % 2 == 0)
+		while (n > i)
+		{
+			if (n / i == i && n % i == 0)
+				return (i);
+			i += 2;
+		}
+	else
+	{
+		i++;
+		while (n > i)
+		{
+			if (n / i == i && n % i == 0)
+				return (i);
+			i += 2;
+		}
+	}
+	return (0);
+}

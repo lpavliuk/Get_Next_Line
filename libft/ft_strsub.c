@@ -1,31 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strsub.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: opavliuk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/11 18:14:59 by opavliuk          #+#    #+#             */
-/*   Updated: 2018/04/13 21:53:35 by opavliuk         ###   ########.fr       */
+/*   Created: 2018/03/23 19:15:47 by opavliuk          #+#    #+#             */
+/*   Updated: 2018/03/28 20:22:50 by opavliuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include "libft/libft.h"
-
-# define BUFF_SIZE 1
-
-typedef struct	s_lsts
+char		*ft_strsub(char const *s, unsigned int start, size_t len)
 {
-	int				k;
-	int				fd;
-	char			*n;
-	char			buffer[BUFF_SIZE + 1];
-	struct s_lsts	*next;
-}				t_lsts;
+	size_t	i;
+	char	*d;
 
-int				get_next_line(const int fd, char **line);
-
-#endif
+	i = 0;
+	if (s == NULL)
+		return (NULL);
+	d = (char *)malloc(sizeof(char) * (len + 1));
+	if (d == NULL)
+		return (NULL);
+	ft_bzero(d, (len + 1));
+	while (s[i] != '\0' && len > 0)
+	{
+		d[i] = s[start];
+		i++;
+		start++;
+		len--;
+	}
+	d[i] = '\0';
+	return (d);
+}

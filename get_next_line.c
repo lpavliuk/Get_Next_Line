@@ -6,7 +6,7 @@
 /*   By: opavliuk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/11 18:15:15 by opavliuk          #+#    #+#             */
-/*   Updated: 2018/04/12 21:51:28 by opavliuk         ###   ########.fr       */
+/*   Updated: 2018/04/13 22:05:20 by opavliuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,10 @@ t_lsts		*check_list(t_lsts *gnl, int fd)
 	}
 	if (!tmp)
 		tmp = malloc(sizeof(t_lsts));
-	tmp->i = 0;
 	tmp->k = 0;
 	tmp->fd = fd;
 	tmp->next = NULL;
-	ft_bzero(tmp->buffer, BUFF_SIZE + 1);
+	ft_strclr(tmp->buffer);
 	while (gnl->next)
 		gnl = gnl->next;
 	gnl->next = tmp;
@@ -46,7 +45,7 @@ void		check_line(t_lsts *elem, char **line)
 	if ((*line) != NULL)
 	{
 		mod = ft_strdup((*line));
-		ft_strdel(line);
+		free(*line);
 		(*line) = ft_strjoin(mod, elem->buffer);
 		free(mod);
 		mod = NULL;
@@ -54,14 +53,9 @@ void		check_line(t_lsts *elem, char **line)
 	else
 		(*line) = ft_strdup(elem->buffer);
 	if (elem->n)
-	{
-		elem->i = ft_strlen(elem->n + 1);
-		ft_memmove(&(elem->buffer[0]), &elem->n[1], elem->i + 1);
-		ft_bzero(elem->buffer + elem->i,
-				ft_strlen(elem->buffer + (elem->i + 1)));
-	}
+		ft_strncpy(elem->buffer, &elem->n[1], BUFF_SIZE + 1);
 	else
-		ft_bzero(elem->buffer, BUFF_SIZE + 1);
+		ft_strclr(elem->buffer);
 }
 
 int			write_list(t_lsts *elem, char **line)
@@ -72,7 +66,7 @@ int			write_list(t_lsts *elem, char **line)
 		return (1);
 	}
 	(*line) = ft_strdup(elem->buffer);
-	ft_bzero(elem->buffer, BUFF_SIZE + 1);
+	ft_strclr(elem->buffer);
 	while ((elem->k = read(elem->fd, elem->buffer, BUFF_SIZE)) > 0)
 	{
 		check_line(elem, line);
@@ -87,7 +81,7 @@ int			get_next_line(const int fd, char **line)
 	static t_lsts	*gnl;
 	t_lsts			*elem;
 
-	if (fd >= 0 && line && BUFF_SIZE > 0)
+	if (fd >= 0 && line)
 	{
 		if (!gnl)
 		{
