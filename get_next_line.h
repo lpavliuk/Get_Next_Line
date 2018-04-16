@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: opavliuk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/11 18:14:59 by opavliuk          #+#    #+#             */
-/*   Updated: 2018/04/13 21:53:35 by opavliuk         ###   ########.fr       */
+/*   Created: 2018/04/16 16:19:35 by opavliuk          #+#    #+#             */
+/*   Updated: 2018/04/16 17:23:18 by opavliuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,8 @@
 
 # include "libft/libft.h"
 
-# define BUFF_SIZE 1
+# define BUFF_SIZE 32
 
-typedef struct	s_lsts
-{
-	int				k;
-	int				fd;
-	char			*n;
-	char			buffer[BUFF_SIZE + 1];
-	struct s_lsts	*next;
-}				t_lsts;
-
-int				get_next_line(const int fd, char **line);
+int	get_next_line(const int fd, char **line);
 
 #endif

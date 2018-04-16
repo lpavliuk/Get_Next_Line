@@ -5,99 +5,91 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: opavliuk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/11 18:15:15 by opavliuk          #+#    #+#             */
-/*   Updated: 2018/04/13 22:05:20 by opavliuk         ###   ########.fr       */
+/*   Created: 2018/04/16 17:10:05 by opavliuk          #+#    #+#             */
+/*   Updated: 2018/04/16 17:10:10 by opavliuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_lsts		*check_list(t_lsts *gnl, int fd)
+static t_list	*check_list(t_list **gnl, const int fd)
 {
-	t_lsts *tmp;
+	t_list *tmp;
 
-	tmp = gnl;
+	if ((*gnl)->content == NULL)
+		(*gnl)->content_size = -1;
+	tmp = *gnl;
 	while (tmp)
 	{
-		if (tmp->fd == fd)
+		if ((int)tmp->content_size == fd)
 			return (tmp);
 		tmp = tmp->next;
 	}
-	if (!tmp)
-		tmp = malloc(sizeof(t_lsts));
-	tmp->k = 0;
-	tmp->fd = fd;
-	tmp->next = NULL;
-	ft_strclr(tmp->buffer);
-	while (gnl->next)
-		gnl = gnl->next;
-	gnl->next = tmp;
+	tmp = ft_lstnew(NULL, 0);
+	tmp->content = ft_strnew(BUFF_SIZE);
+	tmp->content_size = fd;
+	ft_lstadd(gnl, tmp);
 	return (tmp);
 }
 
-void		check_line(t_lsts *elem, char **line)
+static int		check_line(t_list *elem, char **line)
 {
-	char *mod;
+	char *n;
 
-	elem->n = ft_strchr(elem->buffer, '\n');
-	if (elem->n != NULL)
-		ft_memset(elem->n, '\0', 1);
-	if ((*line) != NULL)
+	if ((n = ft_strchr(elem->content, '\n')) != NULL)
 	{
-		mod = ft_strdup((*line));
-		free(*line);
-		(*line) = ft_strjoin(mod, elem->buffer);
-		free(mod);
-		mod = NULL;
-	}
-	else
-		(*line) = ft_strdup(elem->buffer);
-	if (elem->n)
-		ft_strncpy(elem->buffer, &elem->n[1], BUFF_SIZE + 1);
-	else
-		ft_strclr(elem->buffer);
-}
-
-int			write_list(t_lsts *elem, char **line)
-{
-	if ((elem->n = ft_strchr(elem->buffer, '\n')) != NULL)
-	{
-		check_line(elem, line);
+		ft_memset(n, '\0', 1);
+		(*line) = ft_strdup(elem->content);
+		ft_strncpy(elem->content, &n[1], BUFF_SIZE + 1);
 		return (1);
 	}
-	(*line) = ft_strdup(elem->buffer);
-	ft_strclr(elem->buffer);
-	while ((elem->k = read(elem->fd, elem->buffer, BUFF_SIZE)) > 0)
-	{
-		check_line(elem, line);
-		if (elem->n != NULL)
-			break ;
-	}
+	(*line) = ft_strdup(elem->content);
+	ft_strclr(elem->content);
 	return (0);
 }
 
-int			get_next_line(const int fd, char **line)
+static void		check_content(t_list *elem, char **line)
 {
-	static t_lsts	*gnl;
-	t_lsts			*elem;
+	char *n;
+	char *mod;
 
-	if (fd >= 0 && line)
+	n = ft_strchr(elem->content, '\n');
+	if (n != NULL)
+		ft_memset(n, '\0', 1);
+	mod = *line;
+	(*line) = ft_strjoin((*line), elem->content);
+	free(mod);
+	if (n)
+		ft_strncpy(elem->content, &n[1], BUFF_SIZE + 1);
+	else
+		ft_strclr(elem->content);
+}
+
+int				get_next_line(const int fd, char **line)
+{
+	static t_list	*gnl;
+	t_list			*elem;
+	int				k;
+
+	if (fd < 0 || !line)
+		return (-1);
+	*line = NULL;
+	k = 0;
+	if (!gnl)
+		gnl = ft_lstnew(NULL, 0);
+	elem = check_list(&gnl, fd);
+	if (read(fd, elem->content, 0) < 0)
+		return (-1);
+	if (check_line(elem, line))
+		return (1);
+	while ((k = read(elem->content_size, elem->content, BUFF_SIZE)) > 0)
 	{
-		if (!gnl)
-		{
-			gnl = malloc(sizeof(t_lsts));
-			gnl->fd = -1;
-			gnl->next = NULL;
-		}
-		if (read(fd, gnl->buffer, 0) < 0)
-			return (-1);
-		*line = NULL;
-		elem = check_list(gnl, fd);
-		if (write_list(elem, line))
-			return (1);
-		if (elem->k == 0 && ft_strlen(*line) == 0)
-			return (0);
-		return ((elem->k == -1) ? -1 : 1);
+		if (ft_strchr(elem->content, '\n') != NULL)
+			break ;
+		check_content(elem, line);
 	}
-	return (-1);
+	check_content(elem, line);
+	if (k == 0 && ft_strlen(*line) == 0)
+		return (0);
+	return ((k == -1) ? -1 : 1);
 }
